@@ -7,12 +7,12 @@ import App from './components/App';
 import movies from './reducers';
 
 const store = createStore(movies);
-console.log('store', store);
-console.log('store state', store.getState());
+// console.log('store', store);
+// console.log('store state', store.getState());
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App store = {store} />
   </React.StrictMode>,
   document.getElementById('root')
 );
