@@ -24,8 +24,6 @@ class App extends React.Component{
     
     const index = favourites.indexOf(movie);
 
-    console.log(index);
-
     if(index !== -1){
       return true;
     }
