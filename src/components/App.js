@@ -35,15 +35,14 @@ class App extends React.Component{
   }
 
   render(){
-
     const { store } = this.props; 
+    console.log('state', store.getState());
+
     const { movies } = store.getState();
     const {list, favourites, showFavourites} = movies;
 
     const moviesList = showFavourites ? favourites : list;
     
-    console.log('state', store.getState());
-
     return (
       <div className="App">
         <Navbar />
