@@ -1,5 +1,6 @@
 import React from 'react';
-import { handleMovieSearch } from '../actions';
+import { addToMovies, handleMovieSearch } from '../actions';
+import { data } from '../data';
 
 class Navbar extends React.Component{
     constructor(){
@@ -18,17 +19,34 @@ class Navbar extends React.Component{
     
     handleSearch = () => {
         const { searchText } = this.state;
-        
         this.props.dispatch(handleMovieSearch(searchText));
     }
 
+    handleAddToMovies = (movie) => {
+        this.props.dispatch(addToMovies(movie));
+    }
+
     render (){
-        
+        const {result: movie, showSearchResults} = this.props.search;
         return (
             <div className = 'nav'>
                 <div className = 'search-container'>
                     <input type='text' onChange = {this.handleChange} />
                     <button id = 'search-btn' onClick = {this.handleSearch} >Search</button>
+
+                    {showSearchResults && 
+                        <div className = 'search-results'>
+                            <div className = 'search-result'>
+                                <img src={data[0].Poster} alt="movie-poster" />
+                                <div className = 'movie-info'>
+                                    <span> {data[0].title} </span>
+                                    <button onClick = { () => (this.handleAddToMovies(data[0])) }>
+                                        Add to Movies
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         )
