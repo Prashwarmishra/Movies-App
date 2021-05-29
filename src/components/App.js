@@ -50,7 +50,7 @@ class App extends React.Component{
           return (
             <div className="App">
               <Navbar 
-                dispatch = { store.dispatch } 
+                // dispatch = { store.dispatch } 
                 search = { search }
               />
               <div className = 'main'>
@@ -81,4 +81,16 @@ class App extends React.Component{
   }
 }
 
-export default App;
+class AppWrapper extends React.Component{
+  render(){
+    return (
+      <StoreContext.Consumer>
+        {(store) => {
+          return <App store = {store} />
+        }}
+      </StoreContext.Consumer>
+    )
+  }
+}
+
+export default AppWrapper;

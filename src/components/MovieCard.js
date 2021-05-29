@@ -1,5 +1,6 @@
 import React from 'react';
 import { addToFavourites, removeFromFavourites } from '../actions';
+import {StoreContext} from '../index';
 
 class MovieCard extends React.Component {
 
@@ -38,4 +39,20 @@ class MovieCard extends React.Component {
     }
 }
 
-export default MovieCard;
+class MovieCardWrapper extends React.Component{
+    render(){
+        return(
+            <StoreContext.Consumer>
+                {(store) => {
+                    return <MovieCard 
+                                dispatch = {store.dispatch} 
+                                movie = {this.props.movie}
+                                isMovieFavourite = {this.props.isMovieFavourite}
+                            />
+                }}
+            </StoreContext.Consumer>
+        )
+    }
+}
+
+export default MovieCardWrapper;
