@@ -5,7 +5,7 @@ import thunk from 'redux-thunk';
 
 import './index.css';
 import App from './components/App';
-import rootReducer from './reducers';
+import combineReducers from './reducers';
 
 // const logger = ( {dispatch, getState} ) => (next) => (action) => {console.log('action-type = ', action.type); return next(action)}
 
@@ -23,7 +23,7 @@ const logger = ( {dispatch, getState} ) => (next) => (action) => {
 //   return next(action);
 // }
 
-const store = createStore(rootReducer, applyMiddleware(logger, thunk));
+const store = createStore(combineReducers, applyMiddleware(logger, thunk));
 
 export const StoreContext = createContext();
 
@@ -39,6 +39,44 @@ class Provider extends React.Component{
     )
   }
 }
+
+export function connect(callback){
+  return function (Component){
+    class ConnectedComponent extends React.Component{
+      constructor(props){
+        super(props);
+        this.unsubscribe = this.props.store.subscribe(() => this.forceUpdate());
+      }
+      componentWillUnmount(){
+        this.unsubscribe();
+      }
+      render(){
+        const {store} = this.props;
+        const state = store.getState();
+        const dataToBePassedAsProps = callback(state);
+        return (
+          <Component 
+            {...dataToBePassedAsProps} 
+            dispatch = {store.dispatch} 
+          />
+        )
+      }
+    }
+    class ConnectedComponentWrapper extends React.Component{
+      render(){
+        return (
+          <StoreContext.Consumer>
+            {(store) => (
+              <ConnectedComponent store = {store} />
+            )}
+          </StoreContext.Consumer>
+        )
+      }
+    }
+    return ConnectedComponentWrapper;
+  }
+}
+
 
 ReactDOM.render(
   <Provider store = {store} >
