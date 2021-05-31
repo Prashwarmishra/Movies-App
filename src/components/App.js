@@ -3,7 +3,7 @@ import Navbar from './Navbar';
 import MovieCard from './MovieCard';
 import {data} from '../data';
 import { addMovies, showFavourites } from '../actions';
-import { connect } from '../index';
+import { connect } from 'react-redux';
 
 class App extends React.Component{
 
@@ -59,6 +59,7 @@ class App extends React.Component{
               moviesList.map((movie, index) => (
                 <MovieCard 
                   movie = {movie} 
+                  index = {index}
                   key = {`movie-id-${index}`}
                   dispatch = {this.props.dispatch}
                   isMovieFavourite = {this.isMovieFavourite(movie)}
@@ -85,13 +86,13 @@ class App extends React.Component{
 //   }
 // }
 
-export function callback(state){
+export function MapStateToProps(state){
   return {
     movies: state.movies,
     search: state.search
   }
 }
 
-const ConnectedApp = connect(callback)(App);
+const ConnectedApp = connect(MapStateToProps)(App);
 
 export default ConnectedApp;
